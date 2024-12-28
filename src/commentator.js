@@ -20,7 +20,7 @@ const addPullRequestComment = async (githubToken, message) => {
 
   const comment = comments.find(
     (c) =>
-      c.user.login === 'github-actions[bot]' && c.body.startsWith(WATERMARK)
+      c.user.login === 'gitea-actions' && c.body.startsWith(WATERMARK)
   );
 
   if (comment) {

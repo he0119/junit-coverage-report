@@ -37735,7 +37735,7 @@ const addPullRequestComment = async (githubToken, message) => {
 
   const comment = comments.find(
     (c) =>
-      c.user.login === 'github-actions[bot]' && c.body.startsWith(WATERMARK)
+      c.user.login === 'gitea-actions' && c.body.startsWith(WATERMARK)
   );
 
   if (comment) {
@@ -38370,7 +38370,7 @@ const getPullRequestFilesUrl = () => {
   const { repo, owner } = context.repo;
   const _repository = repository || `${owner}/${repo}`
   const commit = payload.pull_request.head.sha;
-  return `https://github.com/${_repository}/blob/${commit}`;
+  return `https://git.hehome.xyz/${_repository}/blob/${commit}`;
 }
 
 const generateReport = (junitFileContent, coverageFileContent, customTemplateFileContent) => {
