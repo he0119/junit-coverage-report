@@ -24,6 +24,11 @@ inputs:
   template-path:
     description: 'Custom template file path'
     required: false
+  
+  source-path:
+    description: 'Source path'
+    default: 'src'
+    required: false
 
 runs:
   using: 'node20'

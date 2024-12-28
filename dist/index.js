@@ -38354,6 +38354,7 @@ const { getFileContent } = __nccwpck_require__(1608);
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const { addPullRequestComment } = __nccwpck_require__(6545);
+const urlJoin = __nccwpck_require__(3437);
 
 const loadFile = (filePath) => {
   if (!filePath) {
@@ -38373,11 +38374,12 @@ const getPullRequestFilesUrl = () => {
   return `https://git.hehome.xyz/${_repository}/src/commit/${commit}`;
 }
 
-const generateReport = (junitFileContent, coverageFileContent, customTemplateFileContent) => {
+const generateReport = (junitFileContent, coverageFileContent, customTemplateFileContent, sourcePath) => {
   const repositoryUrl = getPullRequestFilesUrl();
   const coverageData = getCoverageData(coverageFileContent);
   const junitData = getJUnitData(junitFileContent);
-  return getReport(junitData, coverageData, repositoryUrl, customTemplateFileContent);
+  const newRepositoryUrl = urlJoin(repositoryUrl, sourcePath);
+  return getReport(junitData, coverageData, newRepositoryUrl, customTemplateFileContent);
 }
 
 async function main() {
@@ -38391,12 +38393,13 @@ async function main() {
     const junitPath = core.getInput("junit-path", { required: false });
     const coveragePath = core.getInput("coverage-path", { required: false });
     const templatePath = core.getInput("template-path", { required: false });
+    const sourcePath = core.getInput("source-path", { required: false });
 
     const junitFileContent = loadFile(junitPath);
     const coverageFileContent = loadFile(coveragePath);
     const customTemplateFileContent = loadFile(templatePath);
 
-    const report = generateReport(junitFileContent, coverageFileContent, customTemplateFileContent);
+    const report = generateReport(junitFileContent, coverageFileContent, customTemplateFileContent, sourcePath);
     await addPullRequestComment(token, report);
   }
 }
